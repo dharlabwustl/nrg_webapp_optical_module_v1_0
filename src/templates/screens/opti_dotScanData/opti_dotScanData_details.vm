@@ -1,0 +1,8 @@
+<table>
+#if( $scan.getStringProperty("opti:dotScanData/scan_field_1") )
+     <tr><th>Scan Field 1</th><td>$!scan.getStringProperty("opti:dotScanData/scan_field_1")</td></tr>
+#end
+#if( $scan.getStringProperty("opti:dotScanData/scan_field_2") )
+     <tr><th>Scan Field 2</th><td>$!scan.getStringProperty("opti:dotScanData/scan_field_2")</td></tr>
+#end
+</table>

@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+#parse($turbineUtils.getTemplateName("report","xnat:imageAssessorData",$project))
+
+
+#set($parentSession=$om.getImageSessionData())
+
+<div id="info">
+    <h2>OIS Processing QC Report: $!om.label</h2>
+    <table class="xnat-table">
+
+        <tr><td>Parent session</td><td><a href="$content.getURI("/data/experiments/$parentSession.getId()")">$parentSession.getLabel()</a></td></tr>
+        <tr><td>Date</td><td>$!om.date</td></tr>
+        <tr><td>ID</td><td>$!om.label</td></tr>
+        <tr><td>Project</td><td>$!om.project</td></tr>
+        #if ($!item.getStringProperty("opti:oisProcData/note"))
+            <tr><td>Note</td><td>$!item.getStringProperty("opti:oisProcData/note")</td></tr>
+        #end
+
+        #if($!item.getStringProperty("opti:oisProcData/validation/status"))
+            <tr><th>Validation Status</th><td>$!item.getStringProperty("opti:oisProcData/validation/status")</td></tr>
+            <tr><th>Validated By</th><td>$!item.getStringProperty("opti:oisProcData/validation/validated_by")</td></tr>
+            <tr><th>Date Validated</th><td>$!item.getProperty("opti:oisProcData/validation/date")</td></tr>
+            <tr><th>Method</th><td>$!item.getStringProperty("opti:oisProcData/validation/method")</td></tr>
+            <tr><th>Notes</th><td>$!item.getStringProperty("opti:oisProcData/validation/notes")</td></tr>
+        #end
+    </table>
+</div>
+<br/>
+<div id="frames_hb">
+    <h3>Frames Hb</h3>
+    <table class="xnat-table">
+
+        <tr><th>Scan Id</th><th>Frames Hb</th></tr>
+
+        #foreach($frames_hb in $om.getFramesHbs_framesHb())
+            <tr>
+                <td>$frames_hb.getScanid()</td>
+                <TD>$frames_hb.getFramesHb()</TD>
+            </tr>
+        #end
+    </table>
+</div>
+<br/>
+<div id="inputParams">
+    <h3>Input parameters</h3>
+    <table class="xnat-table">
+        <tr><th>Name</th><th>Value</th></TR>
+        #if($om.getDoubleProperty("inputParams/rs_samplingrate"))
+            <tr><td>rs_samplingrate</td><td>$om.getDoubleProperty("inputParams/rs_samplingrate")</td></tr>
+            <tr><td>rs_lowpass</td><td>$om.getDoubleProperty("inputParams/rs_lowpass")</td></tr>
+            <tr><td>rs_highpass</td><td>$om.getDoubleProperty("inputParams/rs_highpass")</td></tr>
+        #end
+        #if($om.getDoubleProperty("inputParams/stim_samplingrate"))
+            <tr><td>stim_samplingrate</td><td>$om.getDoubleProperty("inputParams/stim_samplingrate")</td></tr>
+            <tr><td>stim_lowpass</td><td>$om.getDoubleProperty("inputParams/stim_lowpass")</td></tr>
+            <tr><td>stim_highpass</td><td>$om.getDoubleProperty("inputParams/stim_highpass")</td></tr>
+            <tr><td>stim_blocksize</td><td>$om.getDoubleProperty("inputParams/stim_blocksize")</td></tr>
+            <tr><td>stim_baseline</td><td>$om.getDoubleProperty("inputParams/stim_baseline")</td></tr>
+            <tr><td>stim_duration</td><td>$om.getDoubleProperty("inputParams/stim_duration")</td></tr>
+        #end
+    </table>
+<div>
+<br/>
+<div id="qcImages">
+    <h3>QC images</h3>
+
+    <script>
+        (function(){
+            jq.getJSON('/REST/experiments/$parentSession.getId()/assessors/$om.getId()/resources/QC/files?format=json')
+                .success(function(data){
+                    var images = data.ResultSet.Result;
+
+                    // iterate through each image found in this resource folder
+                    jq(images).each(function(){
+                        var img = '<a href="'+this.URI+'"><img src="'+this.URI+'" title="'+this.Name+'" width="75%" /></a>';
+                        jq('#qcImages').append(img);
+                    });
+
+                });
+        })();
+    </script>
+</div>

@@ -1,0 +1,11 @@
+			<!--BEGIN opti_dotSessionData_keyFields.vm -->
+#parse($turbineUtils.getTemplateName("_keyFields","xnat:imageSessionData",$project))
+						#if($!item.getProperty("opti:dotSessionData/sess_field_1"))
+                                                        <TR><TH align="left">Session Field 1:</TH><TD>$!item.getProperty("opti:dotSessionData/sess_field_1")</TD></TR>
+                                                        #end
+					        #if($!item.getProperty("opti:dotSessionData/sess_field_2"))
+                                                        <TR><TH align="left">Session Field 2:</TH><TD>$!item.getProperty("opti:dotSessionData/sess_field_2")</TD></TR>
+                                                        #end
+
+
+										<!--END opti_dotSessionData_keyFields.vm -->

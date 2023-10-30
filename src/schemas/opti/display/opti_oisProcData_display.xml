@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Displays xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xdat/display.xsd" schema-element="opti:oisProcData" full-description="OISProcessed" brief-description="OISProcessed">
+	<DisplayField id="EXPT_ID" header="ID" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.ID"/>
+		<HTML-Link>
+			<Property name="HREF" value="none"/>
+			<Property name="ONCLICK" value="return rpt('@Field1','opti:oisProcData','opti:oisProcData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="RPT" header="ID" visible="true" image="true">
+		<Content type="sql">'/@WEBAPP/images/r.gif'::text</Content>
+		<HTML-Link>
+			<Property name="HREF" value="none"/>
+			<Property name="ONCLICK" value="return rpt('@Field1','opti:oisProcData','opti:oisProcData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="DATE" header="Date" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.date"/>
+	</DisplayField>
+	<DisplayField header="Projects" id="PROJECTS" data-type="string">
+		<DisplayFieldElement name="Field1" viewName="OPTI_OISPROCDATA_PROJECTS" viewColumn="PROJECTS"/>
+	</DisplayField>
+	<DisplayField header="Label" id="LABEL" data-type="string">
+	<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.ID"/>
+	<DisplayFieldElement name="Field2" schema-element="opti:oisProcData.label"/>
+	<Content type="sql">COALESCE(@Field2, @Field1)</Content>
+		<HTML-Link>
+			<SecureLink elementName="opti:oisProcData">
+				<securityMappingValue displayFieldId="PROJECTS" schemaElementMap="opti:oisProcData/sharing/share/project"/>
+				<securityMappingValue displayFieldId="PROJECT" schemaElementMap="opti:oisProcData/project"/>
+			</SecureLink>
+			<Property name="HREF" value="@WEBAPPapp/action/DisplayItemAction/search_value/@Field1/search_element/opti:oisProcData/search_field/opti:oisProcData.ID">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+			<Property name="ONCLICK" value="return rpt('@Field1','opti:oisProcData','opti:oisProcData.ID');">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+			</Property>
+			<Property name="TITLE" value="Inserted: @Field1 (@Field2)">
+				<InsertValue id="Field1" field="INSERT_DATE"/>
+				<InsertValue id="Field2" field="INSERT_USER"/>
+			</Property>
+		</HTML-Link>
+	</DisplayField>
+	<DisplayField id="PROJECT" header="Project" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.project"/>
+	</DisplayField>
+	<DisplayField id="OPTI_OISPROCDATA_PROJECT_IDENTIFIER" header="OPTI_OISPROCDATA ID" visible="true" searchable="false" data-type="string" xsi:type="SubQueryField">
+		<Content type="sql">opti_oisprocdata_project_id</Content>
+		<HTML-Link>
+			<SecureLink elementName="opti:oisProcData">
+				<securityMappingValue displayFieldId="PROJECTS" schemaElementMap="opti:oisProcData/sharing/share/project"/>
+				<securityMappingValue displayFieldId="PROJECT" schemaElementMap="opti:oisProcData/project"/>
+			</SecureLink>
+			<Property name="HREF" value="@WEBAPPapp/action/DisplayItemAction/search_value/@Field1/search_element/opti:oisProcData/search_field/opti:oisProcData.ID/project/@Field2">
+				<InsertValue id="Field1" field="EXPT_ID"/>
+				<InsertValue id="Field2" field="@WHERE"/>
+			</Property>
+		</HTML-Link>
+		<SubQuery>SELECT DISTINCT COALESCE(label,sharing_share_xnat_experimentda_id) AS opti_oisprocdata_project_id,sharing_share_xnat_experimentda_id FROM (	SELECT sharing_share_xnat_experimentda_id,label FROM xnat_experimentdata_share WHERE project='@WHERE'	UNION 	SELECT id,label FROM xnat_experimentData WHERE project='@WHERE' )SEARCH</SubQuery>
+		<MappingColumns>
+			<MappingColumn schemaField="opti:oisProcData.ID" queryField="sharing_share_xnat_experimentda_id"/>
+		</MappingColumns>
+	</DisplayField>
+	<DisplayField id="INSERT_DATE" header="Inserted" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.meta.insert_date"/>
+	</DisplayField>
+	<DisplayField id="INSERT_USER" header="Creator" visible="true" searchable="true" data-type="string">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData.meta.insert_user.login"/>
+	</DisplayField>
+	<DisplayField id="OPTI_OISPROCDATA_FIELD_MAP" header="Field" visible="true" searchable="false" data-type="string" xsi:type="SubQueryField">
+		<Content type="sql">field</Content>
+		<SubQuery>SELECT DISTINCT ON ( e.ID) e.ID AS expt_id,field FROM xnat_experimentData_field ef JOIN (SELECT ID,extension,element_name FROM xnat_experimentData e JOIN xdat_meta_element xme ON e.extension=xme.xdat_meta_element_id WHERE xme.element_name='opti:oisProcData') e on ef.fields_field_xnat_experimentdat_id=e.id WHERE name='@WHERE'</SubQuery>
+		<MappingColumns>
+			<MappingColumn schemaField="opti:oisProcData.ID" queryField="expt_id"/>
+		</MappingColumns>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_RS_SAMPLINGRATE" header="rs_samplingrate" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/rs_samplingrate"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_RS_LOWPASS" header="rs_lowpass" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/rs_lowpass"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_RS_HIGHPASS" header="rs_highpass" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/rs_highpass"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_SAMPLINGRATE" header="stim_samplingrate" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_samplingrate"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_LOWPASS" header="stim_lowpass" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_lowpass"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_HIGHPASS" header="stim_highpass" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_highpass"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_BLOCKSIZE" header="stim_blocksize" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_blocksize"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_BASELINE" header="stim_baseline" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_baseline"/>
+	</DisplayField>
+	<DisplayField id="INPUTPARAMS_STIM_DURATION" header="stim_duration" visible="true" searchable="true">
+		<DisplayFieldElement name="Field1" schema-element="opti:oisProcData/inputParams/stim_duration"/>
+	</DisplayField>
+	<DisplayVersion versionName="listing" default-order-by="DATE" default-sort-order="DESC" brief-description="OISProcessed" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="RPT"/>
+		<DisplayFieldRef id="LABEL"/>
+		<DisplayFieldRef id="DATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BLOCKSIZE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BASELINE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_DURATION"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="listing_csv" default-order-by="DATE" default-sort-order="DESC" brief-description="OISProcessed" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="LABEL"/>
+		<DisplayFieldRef id="DATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BLOCKSIZE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BASELINE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_DURATION"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="full" default-order-by="DATE" default-sort-order="DESC" brief-description="OISProcessed" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="EXPT_ID"/>
+		<DisplayFieldRef id="DATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BLOCKSIZE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BASELINE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_DURATION"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="detailed" default-order-by="DATE" default-sort-order="DESC" brief-description="OISProcessed" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="EXPT_ID"/>
+		<DisplayFieldRef id="DATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BLOCKSIZE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BASELINE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_DURATION"/>
+	</DisplayVersion>
+	<DisplayVersion versionName="project_bundle" default-order-by="DATE" default-sort-order="DESC" brief-description="OISProcessed" dark-color="9999CC" light-color="CCCCFF">
+		<DisplayFieldRef id="OPTI_OISPROCDATA_PROJECT_IDENTIFIER"/>
+		<DisplayFieldRef id="DATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_RS_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_SAMPLINGRATE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_LOWPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_HIGHPASS"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BLOCKSIZE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_BASELINE"/>
+		<DisplayFieldRef id="INPUTPARAMS_STIM_DURATION"/>
+	</DisplayVersion>
+	<ViewLink alias="OPTI_OISPROCDATA_PROJECTS">
+		<Mapping TableName="OPTI_OISPROCDATA_PROJECTS">
+			<MappingColumn rootElement="opti:oisProcData" fieldElement="opti:oisProcData.ID" mapsTo="id"/>
+		</Mapping>
+	</ViewLink>
+	<SQLView name="OPTI_OISPROCDATA_PROJECTS" sql="SELECT id, '&lt;' || expt.project || '&gt;' || xs_a_concat(',&lt;' || shared.project || '&gt;') AS projects FROM xnat_experimentData expt LEFT JOIN xnat_experimentData_share shared ON expt.id=shared.sharing_share_xnat_experimentda_id LEFT JOIN xdat_meta_element xme ON expt.extension = xme.xdat_meta_element_id WHERE element_name='opti:oisProcData' GROUP BY expt.id,expt.project"/>
+</Displays>

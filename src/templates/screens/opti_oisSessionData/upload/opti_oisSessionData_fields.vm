@@ -1,0 +1,13 @@
+<TR>
+                                        <th align="left">LED Spectra</th>
+                                          <td>#xdatTextBox("opti:oisSessionData/ledspectra" $item "" $vr)</td>
+                                        </tr>
+<TR>
+                                        <th align="left">Frame Rate</th>
+                                          <td>#xdatTextBox("opti:oisSessionData/framerate" $item "" $vr)</td>
+                                        </tr>
+<TR>
+					<th align="left">Num LED</th>
+					  <td>#xdatTextBox("opti:oisSessionData/numled" $item "" $vr)</td>
+					</tr>    
+												

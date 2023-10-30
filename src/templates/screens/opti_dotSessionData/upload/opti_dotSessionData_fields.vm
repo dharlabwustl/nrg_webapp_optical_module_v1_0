@@ -1,0 +1,8 @@
+<TR>
+                                        <th align="left">Session Field 1</th>
+                                          <td>#xdatTextBox("opti:dotSessionData/sess_field_1" $item "" $vr)</td>
+                                        </tr>
+<TR>
+                                        <th align="left">Session Field 2</th>
+                                          <td>#xdatTextBox("opti:dotSessionData/sess_field_2" $item "" $vr)</td>
+                                        </tr>

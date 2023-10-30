@@ -1,0 +1,15 @@
+			<!--BEGIN opti_oisSessionData_keyFields.vm -->
+#parse($turbineUtils.getTemplateName("_keyFields","xnat:imageSessionData",$project))
+
+						#if($!item.getProperty("opti:oisSessionData/ledspectra"))
+							<TR><TH align="left">LED Spectra:</TH><TD>$!item.getProperty("opti:oisSessionData/ledspectra")</TD></TR>
+							#end
+	                                        #if($!item.getProperty("opti:oisSessionData/framerate"))
+                                                        <TR><TH align="left">Frame Rate:</TH><TD>$!item.getProperty("opti:oisSessionData/framerate")</TD></TR>
+                                                        #end
+						#if($!item.getProperty("opti:oisSessionData/numled"))
+                                                        <TR><TH align="left">Num LED:</TH><TD>$!item.getProperty("opti:oisSessionData/numled")</TD></TR>
+                                                        #end
+
+
+										<!--END opti_oisSessionData_keyFields.vm -->

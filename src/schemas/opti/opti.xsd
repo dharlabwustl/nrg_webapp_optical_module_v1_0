@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://nrg.wustl.edu/opti" xmlns:opti="http://nrg.wustl.edu/opti" xmlns:xdat="http://nrg.wustl.edu/xdat" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xnat="http://nrg.wustl.edu/xnat" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:import namespace="http://nrg.wustl.edu/xnat" schemaLocation="../xnat/xnat.xsd"/>
+    <xs:element name="OISOpticalImaging" type="opti:oisSessionData">
+        <xs:annotation>
+            <xs:documentation>Optical imaging data</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="OISOpticalImagingScan" type="opti:oisScanData">
+        <xs:annotation>
+            <xs:documentation>Optical imaging scan data</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="DOTOpticalImaging" type="opti:dotSessionData">
+        <xs:annotation>
+            <xs:documentation>Optical imaging data</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="DOTOpticalImagingScan" type="opti:dotScanData">
+        <xs:annotation>
+            <xs:documentation>Optical imaging scan data</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="OISProcessed" type="opti:oisProcData">
+        <xs:annotation>
+            <xs:documentation>Processed optical imaging data</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="oisSessionData">
+        <xs:complexContent>
+            <xs:extension base="xnat:imageSessionData">
+                <xs:sequence minOccurs="0">
+                    <xs:element name="contrast" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:maxLength value="255"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="framerate" type="xs:float" minOccurs="0"/>
+                    <xs:element name="numled" type="xs:integer" minOccurs="0"/>
+                    <xs:element name="contrasts_hb" type="xs:integer" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="oisScanData">
+        <xs:complexContent>
+            <xs:extension base="xnat:imageScanData">
+                <xs:sequence minOccurs="0">
+                    <xs:element name="pixels_x" type="xs:integer" minOccurs="0"/>
+                    <xs:element name="pixels_y" type="xs:integer" minOccurs="0"/>
+                    <xs:element name="frames_led" type="xs:integer" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="dotSessionData">
+        <xs:complexContent>
+            <xs:extension base="xnat:imageSessionData">
+                <xs:sequence minOccurs="0">
+                    <!--<xs:element name="sess_field_1" type="xs:float" minOccurs="0"/>
+                    <xs:element name="sess_field_2" type="xs:string" minOccurs="0"/>-->
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="dotScanData">
+        <xs:complexContent>
+            <xs:extension base="xnat:imageScanData">
+                <xs:sequence minOccurs="0">
+                    <!--<xs:element name="scan_field_1" type="xs:float" minOccurs="0"/>
+                    <xs:element name="scan_field_2" type="xs:string" minOccurs="0"/>-->
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="oisProcData">
+        <xs:complexContent>
+            <xs:extension base="xnat:imageAssessorData">
+                <xs:sequence minOccurs="0">
+                    <xs:element name="inputParams" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="rs_samplingrate" type="xs:float" minOccurs="0"/>
+                                <xs:element name="rs_lowpass" type="xs:float" minOccurs="0"/>
+                                <xs:element name="rs_highpass" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_samplingrate" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_lowpass" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_highpass" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_blocksize" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_baseline" type="xs:float" minOccurs="0"/>
+                                <xs:element name="stim_duration" type="xs:float" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="frames_hbs" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="frames_hb" minOccurs="0" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                        <xs:appinfo>
+                                            <xdat:field>
+                                                <xdat:relation uniqueComposite="scanid" relationType="single"/>
+                                            </xdat:field>
+                                        </xs:appinfo>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:simpleContent>
+                                            <xs:extension base="xs:integer">
+                                                <xs:attribute name="scanid" type="xs:string" use="required">
+                                                    <xs:annotation>
+                                                        <xs:appinfo>
+                                                            <xdat:field uniqueComposite="scanid" relationType="single"/>
+                                                        </xs:appinfo>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:extension>
+                                        </xs:simpleContent>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

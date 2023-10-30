@@ -1,0 +1,17 @@
+<table>
+#if( $scan.getStringProperty("opti:oisScanData/pixels_x") )
+     <tr><th>Pixels X</th><td>$!scan.getStringProperty("opti:oisScanData/pixels_x")</td></tr>
+#end
+#if( $scan.getStringProperty("opti:oisScanData/pixels_y") )
+     <tr><th>Pixels Y</th><td>$!scan.getStringProperty("opti:oisScanData/pixels_y")</td></tr>
+#end
+#if( $scan.getStringProperty("opti:oisScanData/frames_led") )
+     <tr><th>Frames LED</th><td>$!scan.getStringProperty("opti:oisScanData/frames_led")</td></tr>
+#end
+#if( $scan.getStringProperty("opti:oisScanData/frames_hb") )
+     <tr><th>Frames HB</th><td>$!scan.getStringProperty("opti:oisScanData/frames_hb")</td></tr>
+#end
+#if( $scan.getStringProperty("opti:oisScanData/contrasts_hb") )
+     <tr><th>Contrasts HB</th><td>$!scan.getStringProperty("opti:oisScanData/contrasts_hb")</td></tr>
+#end
+</table>
